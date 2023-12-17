@@ -11,8 +11,8 @@ export function Header() {
                 <Link className="hover:text-rose-900" to="/">My Blog</Link>
                 <div>
                     <ul className="flex space-x-6">
-                        <li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white" to="/">Home</Link>
-                        </li>
+                        <li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white"
+                                  to="/">Home</Link></li>
                         <li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white"
                                   to="/about">About</Link></li>
                         <li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white"
@@ -20,7 +20,7 @@ export function Header() {
                         <li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white"
                                   to="/contact">Contact</Link></li>
                         {user && (<li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white"
-                                  to="/admin">Admin</Link></li>)}
+                                            to="/admin">Admin</Link></li>)}
                         <li><Link className="rounded-md px-2 py-1 hover:bg-rose-900 hover:text-white" to="#">
                             {user ? `Welcome: ${user.userName}` : <button onClick={signIn}>Sign in</button>}
                         </Link></li>
