@@ -1,5 +1,3 @@
-import {PostList} from "../components/post_list"
-
 export function Home() {
     return (
         <div>

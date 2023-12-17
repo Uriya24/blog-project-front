@@ -7,7 +7,7 @@ export function PostCard({singlePost}) {
     const day = curDate.getDate();
 
     return (
-        <div className="flex flex-col max-w-3xl bg-rose-900 text-white border-2 border-gray-500 rounded-lg mx-1 my-4">
+        <div className="flex flex-col max-w-3xl bg-rose-900 text-white border-2 border-gray-500 rounded-lg mx-2 my-4">
             <div className="border-b-2 border-gray-500 p-1 text-sm">{`${day}/${month}/${year}`}</div>
             <div className="pr-6 pl-2 pb-2">
                 <h2 className="text-2xl font-semibold text-white">{singlePost.title}</h2>
@@ -23,11 +23,3 @@ export function PostCard({singlePost}) {
     )
 }
 
-// <div className="card">
-//     <h5 className="card-header">Featured</h5>
-//     <div className="card-body">
-//         <h5 className="card-title">Special title treatment</h5>
-//         <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-//         <a href="#" className="btn btn-primary">Go somewhere</a>
-//     </div>
-// </div>
