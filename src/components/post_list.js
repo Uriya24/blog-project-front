@@ -1,13 +1,8 @@
-
-
-export function PostList() {
-
-
-
+export function PostList({children}) {
 
     return (
-        <div>
-
-        </div>
+        <ul>
+            {children}
+        </ul>
     )
 }

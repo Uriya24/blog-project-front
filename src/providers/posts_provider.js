@@ -17,7 +17,7 @@ export function PostsProvider({children}) {
     }
 
     const removePost = (postId) => {
-        setPostsArr(postsArr.filter((post) => String(post.id) !== postId));
+        setPostsArr(postsArr.filter((post) => post.id !== postId));
     };
 
     const value = { postsArr, addPost, removePost };
