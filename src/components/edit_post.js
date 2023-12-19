@@ -1,38 +1,40 @@
-import {PostsContext} from "../providers/posts_provider";
 import {useContext} from "react";
+import {PostsContext} from "../providers/posts_provider";
 import {useForm} from "react-hook-form";
-import { v4 as uuidv4 } from 'uuid';
+import {useParams} from "react-router-dom";
 
-export function AddPost() {
-    const {addPost} = useContext(PostsContext);
-    const {register, handleSubmit, formState, reset} = useForm();
+export function EditPost() {
+    const {id} = useParams();
+    const {postsArr, getPostIndex, setPostsArr, getPostById} = useContext(PostsContext);
+    const initialPost = getPostById(id);
+    const {register, handleSubmit, formState, reset} = useForm({
+        defaultValues: initialPost
+    });
 
-    function formatDateString(inputDateString) {
-        const dateParts = inputDateString.split('-');
-        const year = dateParts[0];
-        const month = dateParts[1];
-        const day = dateParts[2]
+    console.log('!getPostById(Number(id))', getPostById(id));
 
-        return `${day}/${month}/${year}`;
-    }
-    const handleNewPostSubmit = (data) => {
 
-        addPost({
-            id: uuidv4(),
+    const handleEditPostSubmit = (data) => {
+        const editedPost = {
+            ...initialPost,
             title: data.title,
             body: data.body,
             date: data.date,
-        })
+        }
 
-        reset();
+        const updatedPostsArr = postsArr.map((post) =>
+            post.id.toString() === id ? editedPost : post
+        );
+        setPostsArr(updatedPostsArr);
+        reset(editedPost);
     }
 
-
     return (
-        <div>
-            <form className="text-black flex flex-col" onSubmit={handleSubmit(handleNewPostSubmit)}>
-                {formState.errors.title &&
-                    <span className="text-start text-red-600">{formState.errors.title.message}</span>}
+        <div className="container mx-auto p-4 my-6 text-center w-full max-w-md">
+            <h3 className="mb-12 text-3xl font-bold">Edit post</h3>
+            <form className="text-black flex flex-col" onSubmit={handleSubmit(handleEditPostSubmit)}>
+                {formState.errors?.title &&
+                    <span className="text-start text-red-600">{formState.errors?.title?.message}</span>}
                 <input className="mb-4 px-1 border-2 rounded placeholder-black bg-gray-400"
                        type="text" placeholder="Post title" {...register('title', {
                     required: "This field is required",
@@ -58,7 +60,7 @@ export function AddPost() {
                     {...register('date', {required: "This field is required",})}
                 />
                 <button className="px-4 py-1 font-semibold border-2 text-white bg-blue-900 rounded-lg hover:bg-blue-950"
-                        type="submit">Create Post
+                        type="submit">Submit Post
                 </button>
             </form>
         </div>

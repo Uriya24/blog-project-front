@@ -6,6 +6,7 @@ import {About} from "./pages/about";
 import {Contact} from "./pages/contact";
 import {Admin} from "./pages/admin";
 import {createBrowserRouter} from "react-router-dom";
+import {EditPost} from "./components/edit_post";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
             {
                 path: '/admin',
                 element: <Admin/>
+            },
+            {
+                path: '/edit/:id',
+                element: <EditPost/>
             }
         ],
     },

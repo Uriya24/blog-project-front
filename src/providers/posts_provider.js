@@ -1,5 +1,6 @@
 import {createContext, useEffect, useState} from "react";
 
+
 export const PostsContext = createContext(null);
 
 export function PostsProvider({children}) {
@@ -13,18 +14,28 @@ export function PostsProvider({children}) {
 
 
     const addPost = (newPost) => {
-        setPostsArr([...postsArr, newPost]);
+        setPostsArr([newPost, ...postsArr]);
     }
 
     const removePost = (postId) => {
         setPostsArr(postsArr.filter((post) => post.id !== postId));
     };
 
-    const value = { postsArr, addPost, removePost };
+    const getPostIndex = (postId) => {
+        console.log('@postIndex/!postsArr', postsArr);
+        postsArr.findIndex(post => post.id === Number(postId));
+    }
+
+    const getPostById = (postId) => {
+        return postsArr.find(post => post.id.toString() === postId);
+    }
+
+
+    const postsProviderValues = { postsArr, addPost, removePost, getPostIndex, setPostsArr, getPostById };
 
 
     return (
-        <PostsContext.Provider value={value}>
+        <PostsContext.Provider value={postsProviderValues}>
             {children}
         </PostsContext.Provider>
     )

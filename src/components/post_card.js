@@ -28,14 +28,21 @@ export function PostCard({singlePost}) {
                         className="inline-flex mt-2 px-3 py-2 text-sm font-semibold bg-blue-900 rounded-lg hover:bg-blue-950"
                         to={`/posts/${singlePost.id}`}>Read more
                     </Link>
-                    {user && (
-                        <button
-                            onClick={() => removePost(singlePost.id)}
-                            className="ml-2 inline-flex mt-2 px-3 py-2 text-sm font-semibold bg-red-500 rounded-lg hover:bg-red-600"
-                        >
-                            Remove
-                        </button>
-                    )}
+
+                    {user &&
+                        <>
+                            <Link
+                                className="ml-2 inline-flex mt-2 px-3 py-2 text-sm font-semibold bg-blue-900 rounded-lg hover:bg-blue-950"
+                                to={`/edit/${singlePost.id}`}>Edit
+                            </Link>
+                            <button
+                                onClick={() => removePost(singlePost.id)}
+                                className="ml-2 inline-flex mt-2 px-3 py-2 text-sm font-semibold bg-red-500 rounded-lg hover:bg-red-600"
+                            >
+                                Remove
+                            </button>
+                        </>
+                    }
                 </div>
             </div>
         </div>

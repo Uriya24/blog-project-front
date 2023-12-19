@@ -8,7 +8,9 @@ export function App() {
 
 
     return (
-        <div className="bg-cyan-950 text-white">
+        <div style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL}/zna_bg.jpg)`,
+        }} className= " bg-no-repeat w- text-white">
             <Header/>
             <Outlet/>
             <Footer/>
