@@ -15,7 +15,7 @@ export function Admin() {
 
 
     return (
-        <div className="container mx-auto p-4 my-6 text-center w-full max-w-md">
+        <div className="container mx-auto p-4 my-2 text-center w-full max-w-md">
             <h3 className="mb-12 text-3xl font-bold">Admin page</h3>
             <AddPost/>
             {/*<RemovePost/>*/}

@@ -1,13 +1,14 @@
 import {useContext} from "react";
 import {PostsContext} from "../providers/posts_provider";
 import {useForm} from "react-hook-form";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 
 export function EditPost() {
+    const navigate = useNavigate()
     const {id} = useParams();
-    const {postsArr, getPostIndex, setPostsArr, getPostById} = useContext(PostsContext);
+    const {postsArr, setPostsArr, getPostById} = useContext(PostsContext);
     const initialPost = getPostById(id);
-    const {register, handleSubmit, formState, reset} = useForm({
+    const {register, handleSubmit, formState} = useForm({
         defaultValues: initialPost
     });
 
@@ -26,7 +27,8 @@ export function EditPost() {
             post.id.toString() === id ? editedPost : post
         );
         setPostsArr(updatedPostsArr);
-        reset(editedPost);
+
+        navigate("/posts");
     }
 
     return (
@@ -59,8 +61,9 @@ export function EditPost() {
                     type="date"
                     {...register('date', {required: "This field is required",})}
                 />
-                <button className="px-4 py-1 font-semibold border-2 text-white bg-blue-900 rounded-lg hover:bg-blue-950"
-                        type="submit">Submit Post
+                <button
+                    className="px-4 py-1 font-semibold border-2 text-white bg-blue-900 rounded-lg hover:bg-blue-950"
+                    type="submit">Submit Post
                 </button>
             </form>
         </div>

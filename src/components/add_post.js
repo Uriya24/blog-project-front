@@ -1,22 +1,16 @@
 import {PostsContext} from "../providers/posts_provider";
 import {useContext} from "react";
 import {useForm} from "react-hook-form";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {useNavigate} from "react-router-dom";
 
 export function AddPost() {
     const {addPost} = useContext(PostsContext);
-    const {register, handleSubmit, formState, reset} = useForm();
+    const {register, handleSubmit, formState} = useForm();
+    const navigate = useNavigate()
 
-    function formatDateString(inputDateString) {
-        const dateParts = inputDateString.split('-');
-        const year = dateParts[0];
-        const month = dateParts[1];
-        const day = dateParts[2]
 
-        return `${day}/${month}/${year}`;
-    }
     const handleNewPostSubmit = (data) => {
-
         addPost({
             id: uuidv4(),
             title: data.title,
@@ -24,7 +18,7 @@ export function AddPost() {
             date: data.date,
         })
 
-        reset();
+        navigate("/posts");
     }
 
 
@@ -57,8 +51,9 @@ export function AddPost() {
                     type="date"
                     {...register('date', {required: "This field is required",})}
                 />
-                <button className="px-4 py-1 font-semibold border-2 text-white bg-blue-900 rounded-lg hover:bg-blue-950"
-                        type="submit">Create Post
+                <button
+                    className="px-4 py-1 font-semibold border-2 text-white bg-blue-900 rounded-lg hover:bg-blue-950"
+                    type="submit">Create Post
                 </button>
             </form>
         </div>
