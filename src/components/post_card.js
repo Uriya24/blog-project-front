@@ -7,10 +7,10 @@ export function PostCard({singlePost}) {
     const {user} = useContext(UserContext);
     const {removePost} = useContext(PostsContext);
     return (
-        <div className="flex flex-col max-w-3xl bg-rose-900 text-white border-2 border-gray-500 rounded-lg mx-2 my-4">
-            <div className="border-b-2 border-gray-500 p-1 text-sm">{singlePost.date.split("-").reverse().join("/")}</div>
+        <div className="flex flex-col max-w-xl 2xl:max-w-3xl bg-transparent border-2 border-gray-500 rounded-lg mx-2 my-4">
+            <span className="border-b-2 border-gray-500 p-1 text-sm">{singlePost.date.split("-").reverse().join("/")}</span>
             <div className="pr-6 pl-2 pb-2">
-                <h2 className="text-2xl font-semibold text-white">{singlePost.title}</h2>
+                <h2 className="text-2xl font-semibold">{singlePost.title}</h2>
                 <p>{singlePost.body}</p>
                 <div className="flex justify-end">
                     <Link

@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {useParams} from "react-router-dom";
 import {PostsContext} from "../providers/posts_provider";
 
@@ -11,6 +11,7 @@ export function Post() {
         <div>
             {post ? (
                 <div>
+                    <span>{post.date.split("-").reverse().join("/")}</span>
                     <h1>{post.title}</h1>
                     <p>
                         {post.body}

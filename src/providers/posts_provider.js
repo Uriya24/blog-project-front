@@ -15,6 +15,7 @@ export function PostsProvider({children}) {
                 const postsWithDate = jsonArr.map(post => ({...post, date: (formatDateString(new Date()))}));
                 setPostsArr(postsWithDate);
             })
+        return () => ''
     }, []);
 
 

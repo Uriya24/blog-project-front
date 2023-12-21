@@ -2,18 +2,21 @@ import {useContext} from "react";
 import {PostsContext} from "../providers/posts_provider";
 import {useForm} from "react-hook-form";
 import {useParams, useNavigate} from "react-router-dom";
+import {UserContext} from "../providers/user_provider";
 
 export function EditPost() {
     const navigate = useNavigate()
     const {id} = useParams();
+    const {user} = useContext(UserContext);
     const {postsArr, setPostsArr, getPostById} = useContext(PostsContext);
     const initialPost = getPostById(id);
     const {register, handleSubmit, formState} = useForm({
         defaultValues: initialPost
     });
 
-    console.log('!getPostById(Number(id))', getPostById(id));
-
+    if(!user) {
+        return <p>Only admin can edit posts!</p>
+    }
 
     const handleEditPostSubmit = (data) => {
         const editedPost = {
@@ -35,8 +38,8 @@ export function EditPost() {
         <div className="container mx-auto p-4 my-6 text-center w-full max-w-md">
             <h3 className="mb-12 text-3xl font-bold">Edit post</h3>
             <form className="text-black flex flex-col" onSubmit={handleSubmit(handleEditPostSubmit)}>
-                {formState.errors?.title &&
-                    <span className="text-start text-red-600">{formState.errors?.title?.message}</span>}
+                {formState.errors.title &&
+                    <span className="text-start text-red-600">{formState.errors.title.message}</span>}
                 <input className="mb-4 px-1 border-2 rounded placeholder-black bg-gray-400"
                        type="text" placeholder="Post title" {...register('title', {
                     required: "This field is required",

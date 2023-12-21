@@ -1,7 +1,7 @@
 export function PostList({children}) {
 
     return (
-        <ul>
+        <ul className="flex flex-col justify-center items-center">
             {children}
         </ul>
     )
