@@ -8,6 +8,7 @@ import {Admin} from "./pages/admin";
 import {createBrowserRouter} from "react-router-dom";
 import {EditPost} from "./components/edit_post";
 
+// Creating the router configuration using createBrowserRouter from react-router-dom
 export const router = createBrowserRouter([
     {
         path: "/",

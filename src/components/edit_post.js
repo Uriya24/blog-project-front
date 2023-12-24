@@ -19,13 +19,19 @@ export function EditPost() {
     }
 
     const handleEditPostSubmit = (data) => {
+        // Creating a post with the same attributes as the original post, but with different title, body and date
         const editedPost = {
-            ...initialPost, title: data.title, body: data.body, date: data.date,
+            ...initialPost,
+            title: data.title,
+            body: data.body,
+            date: data.date,
         }
 
+        // replacing the new edited post with the original post in the posts array, by creating actually a new array of posts
         const updatedPostsArr = postsArr.map((post) => post.id.toString() === id ? editedPost : post);
         setPostsArr(updatedPostsArr);
 
+        // Navigate to the '/posts' page after editing a post using the navigate function from react-router-dom
         navigate("/posts");
     }
 

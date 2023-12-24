@@ -6,9 +6,10 @@ export function Header() {
     const {user, signIn, signOut} = useContext(UserContext);
 
     return (
-        <div
-            // style={{backgroundImage: `url(${process.env.PUBLIC_URL}/zna-big.jpg)`}}
-             className="sticky w-full bg-cover flex flex-wrap justify-center items-center top-0 bg-transparent">
+        <header style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL}/zna-big.jpg)`,
+        }}
+             className="sticky w-full flex flex-wrap justify-center items-center top-0 bg-inherit bg-fixed bg-center bg-cover bg-no-repeat">
                 <Link className="font-semibold text-4xl p-1 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-400 to-red-600" to="/">Uriya's Blog</Link>
             <nav className="flex flex-wrap items-center justify-center w-full mx-auto px-4 py-2 font-semibold">
                 <div>
@@ -33,6 +34,6 @@ export function Header() {
                     </ul>
                 </div>
             </nav>
-        </div>
+        </header>
     )
 }

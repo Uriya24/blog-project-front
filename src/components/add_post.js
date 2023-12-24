@@ -11,10 +11,15 @@ export function AddPost() {
 
 
     const handleNewPostSubmit = (data) => {
+        // Add a new post using the addPost function from PostContext with a generated ID from uuid libary
         addPost({
-            id: uuidv4(), title: data.title, body: data.body, date: data.date,
+            id: uuidv4(),
+            title: data.title,
+            body: data.body,
+            date: data.date,
         })
 
+        // Navigate to the '/posts' page after adding the new post using the navigate function from react-router-dom
         navigate("/posts");
     }
 

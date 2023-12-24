@@ -6,6 +6,7 @@ export function ContactForm() {
 
     const handleContactSubmit = (event) => {
 
+        // reset the input fields after "sending" the form because we don't actually send it
         reset()
     }
     return (<div>
