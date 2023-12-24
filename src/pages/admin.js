@@ -6,7 +6,7 @@ export function Admin() {
     const {user} = useContext(UserContext);
 
     if(!user) {
-        return <p>You must sign in first!</p>
+        return <p className="text-center text-red-500 text-2xl mt-3">You must sign in first!</p>
     }
 
     return (

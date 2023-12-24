@@ -15,7 +15,7 @@ export function EditPost() {
     });
 
     if (!user) {
-        return <p>Only admin can edit posts!</p>
+        return <p className="text-center text-red-500 text-2xl mt-3">Only admin can edit posts!</p>
     }
 
     const handleEditPostSubmit = (data) => {

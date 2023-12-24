@@ -8,12 +8,10 @@ export function App() {
     return (
         <div style={{
             backgroundImage: `url(${process.env.PUBLIC_URL}/zna-big.jpg)`,
-        }} className="relative bg-fixed bg-center bg-cover bg-no-repeat overflow-auto w-screen h-screen text-white text-xl">
+        }}
+             className="bg-fixed bg-center bg-cover bg-no-repeat overflow-auto w-screen h-screen text-white text-xl">
             <Header/>
-            <div className=" mb-12">
-                <Outlet/>
-            </div>
-            <Footer/>
+            <Outlet/>
         </div>
     );
 }
