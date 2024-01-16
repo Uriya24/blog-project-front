@@ -10,6 +10,7 @@ export function EditPost() {
     const {user} = useContext(UserContext);
     const {getPostById, updatePost} = useContext(PostsContext);
     const initialPost = getPostById(id);
+    console.log(initialPost.date)
     const {register, handleSubmit, formState} = useForm({
         defaultValues: initialPost
     });
