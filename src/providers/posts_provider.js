@@ -6,87 +6,77 @@ export const PostsContext = createContext(null);
 export function PostsProvider({children}) {
     const [postsArr, setPostsArr] = useState([]);
 
-    const fetchPosts = async () => {
-        try {
-            const response = await fetch('/api/posts');
-            const posts = await response.json();
-            posts.forEach(post => {
-                // const date = new Date(post.date);
-                // post.date = formatDateString(date);
-                post.date = post.date.split('T')[0];
-            });
-            setPostsArr(posts);
-        } catch {
-            alert("there was an error while fetching posts from the server");
-        }
-    }
-
-
     useEffect(() => {
         fetchPosts();
     }, []);
 
 
-    const addPost = (post) => {
-        if (post.date) {
-            console.log(post.date)
-            const dateObj = new Date(post.date)
-            dateObj.setDate(dateObj.getDate() + 1);
-            post.date = dateObj.toJSON().split('T')[0]
-        }
-        const newPost = {
-            "title": post.title,
-            "content": post.content,
-            "date": post.date,
-        };
-
-        fetch('/api/posts', {
-            method: "POST",
-            body: JSON.stringify(newPost),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }).then(() => {
-            alert("post created");
-            fetchPosts();
-        })
-    }
-
-
-    const removePost = (postId) => {
-
-        fetch(`/api/posts/${postId}`, {
-            method: "DELETE",
-        }).then(() => {
-            alert("post deleted");
-            fetchPosts();
-        })
-    }
-
-
-    const updatePost = (updatedPost) => {
-
-        fetch(`/api/posts/${updatedPost.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedPost)
-        })
-            .then(response => {
-                if (response.ok) {
-                    const updatedPosts = postsArr.map(post =>
-                        post.id === updatedPost.id ? updatedPost : post
-                    );
-                    setPostsArr(updatedPosts);
-                    alert("post updated");
-                }
+    const fetchPosts = async () => {
+        try {
+            const response = await fetch('/api/posts');
+            const posts = await response.json();
+            console.log([posts])
+            posts.forEach(post => {
+                console.log(post.date)
+                const date = new Date(post.date);
+                console.log(date)
+                // date.setDate(date.getDate() + 1);
+                post.date = formatDateString(date);
+                // post.date = post.date.split('T')[0];
             })
-            .catch(error => {
-                console.log(error);
-            });
-
+            setPostsArr(posts);
+        } catch (error) {
+            console.error("Error fetching posts from the server:", error);
+            alert("There was an error while fetching posts from the server");
+        }
     }
+
+
+    const addPost = async (post) => {
+        try {
+            await fetch('/api/posts', {
+                method: "POST",
+                body: JSON.stringify(post),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            await fetchPosts();
+            alert("Post created");
+        } catch (error) {
+            console.error("Error adding post:", error);
+        }
+    }
+
+
+    const removePost = async (postId) => {
+        try {
+            await fetch(`/api/posts/${postId}`, {
+                method: "DELETE",
+            });
+            await fetchPosts();
+            alert("Post deleted");
+        } catch (error) {
+            console.error("Error deleting post:", error);
+        }
+    }
+
+
+    const updatePost = async (updatedPost) => {
+        try {
+            await fetch(`/api/posts/${updatedPost.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedPost)
+            });
+            await fetchPosts();
+            alert("Post updated");
+        } catch (error) {
+            console.error("Error updating post:", error);
+        }
+    };
 
 
     const getPostById = (postId) => {
