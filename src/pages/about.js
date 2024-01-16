@@ -1,3 +1,5 @@
+// not included in final project
+
 export function About() {
     return(
         <div>

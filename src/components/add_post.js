@@ -1,7 +1,7 @@
 import {PostsContext} from "../providers/posts_provider";
 import {useContext} from "react";
 import {useForm} from "react-hook-form";
-import {v4 as uuidv4} from 'uuid';
+// import {v4 as uuidv4} from 'uuid';
 import {useNavigate} from "react-router-dom";
 
 export function AddPost() {
@@ -13,9 +13,9 @@ export function AddPost() {
     const handleNewPostSubmit = (data) => {
         // Add a new post using the addPost function from PostContext with a generated ID from uuid libary
         addPost({
-            id: uuidv4(),
+            // id: uuidv4(),
             title: data.title,
-            body: data.body,
+            content: data.content,
             date: data.date,
         })
 
@@ -33,10 +33,10 @@ export function AddPost() {
                     required: "Title is required",
                     minLength: {value: 3, message: "Title must be at least 3 characters long"},
                 })}/>
-                {formState.errors.body &&
-                    <span className="text-start text-red-600">{formState.errors.body.message}</span>}
+                {formState.errors.content &&
+                    <span className="text-start text-red-600">{formState.errors.contnet.message}</span>}
                 <textarea className="mb-10 h-40 px-1 border-2 rounded placeholder-black bg-gray-400"
-                          placeholder="Post content" {...register('body', {required: "Content is required",})}
+                          placeholder="Post content" {...register('content', {required: "Content is required",})}
                 ></textarea>
                 {formState.errors.date && (
                     <span className="text-start text-red-600">{formState.errors.date.message}</span>)}

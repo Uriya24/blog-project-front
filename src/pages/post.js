@@ -14,7 +14,7 @@ export function Post() {
                     <span className="text-sm">{post.date.split("-").reverse().join("/")}</span>
                     <h1 className="text-5xl my-3 2xl:text-6xl">{post.title}</h1>
                     <p className="text-2xl 2xl:text-3xl">
-                        {post.body}
+                        {post.content}
                     </p>
                 </div>
             ) : (
