@@ -1,4 +1,6 @@
 import {createContext, useEffect, useState} from "react";
+import axios from 'axios';
+
 
 // Creating a context for managing the posts
 export const PostsContext = createContext(null);
@@ -14,15 +16,11 @@ export function PostsProvider({children}) {
 
     const fetchPosts = async () => {
         try {
-            const response = await fetch('/api/posts');
-            const posts = await response.json();
-            console.log([posts])
+            const response = await axios.get('/api/posts');
+            const posts = await response.data;
             posts.forEach(post => {
                 const date = new Date(post.date);
-                // date.setDate(date.getDate() + 1);
                 post.date = formatDateString(date);
-                // post.date = post.date.split('T')[0];
-                console.log(post.date)
             })
             setPostsArr(posts);
         } catch (error) {
@@ -34,13 +32,7 @@ export function PostsProvider({children}) {
 
     const addPost = async (post) => {
         try {
-            await fetch('/api/posts', {
-                method: "POST",
-                body: JSON.stringify(post),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
+            await axios.post('/api/posts', post);
             await fetchPosts();
             alert("Post created");
         } catch (error) {
@@ -51,9 +43,7 @@ export function PostsProvider({children}) {
 
     const removePost = async (postId) => {
         try {
-            await fetch(`/api/posts/${postId}`, {
-                method: "DELETE",
-            });
+            await axios.delete(`/api/posts/${postId}`);
             await fetchPosts();
             alert("Post deleted");
         } catch (error) {
@@ -64,13 +54,7 @@ export function PostsProvider({children}) {
 
     const updatePost = async (updatedPost) => {
         try {
-            await fetch(`/api/posts/${updatedPost.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedPost)
-            });
+            await axios.put(`/api/posts/${updatedPost.id}`, updatedPost);
             await fetchPosts();
             alert("Post updated");
         } catch (error) {
