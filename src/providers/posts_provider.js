@@ -1,4 +1,4 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useState} from "react";
 import axios from 'axios';
 
 
@@ -7,22 +7,31 @@ export const PostsContext = createContext(null);
 
 export function PostsProvider({children}) {
     const [postsArr, setPostsArr] = useState([]);
+    const numberOfPostsInPage = 2;
 
-    useEffect(() => {
-        fetchPosts();
-        // eslint-disable-next-line
-    }, []);
+    // useEffect(() => {
+    //     fetchPosts(0, 2);
+    //     // eslint-disable-next-line
+    // }, []);
 
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (from = undefined, to = undefined, filterText = "") => {
+        let apiUrl = '/api/posts';
+
+        if (from !== undefined && to !== undefined) {
+            apiUrl += `?from=${from}&to=${to}`;
+        } else if (filterText !== "") {
+            apiUrl += `?filterText=${filterText}`;
+        }
+
         try {
-            const response = await axios.get('/api/posts');
+            const response = await axios.get(apiUrl);
             const posts = await response.data;
             posts.forEach(post => {
                 const date = new Date(post.date);
                 post.date = formatDateString(date);
             })
-            setPostsArr(posts);
+            return posts;
         } catch (error) {
             console.error("Error fetching posts from the server:", error);
             alert("There was an error while fetching posts from the server");
@@ -33,7 +42,7 @@ export function PostsProvider({children}) {
     const addPost = async (post) => {
         try {
             await axios.post('/api/posts', post);
-            await fetchPosts();
+            await fetchPosts(0, 2);
             alert("Post created");
         } catch (error) {
             console.error("Error adding post:", error);
@@ -44,7 +53,7 @@ export function PostsProvider({children}) {
     const removePost = async (postId) => {
         try {
             await axios.delete(`/api/posts/${postId}`);
-            await fetchPosts();
+            await fetchPosts(0, 2);
             alert("Post deleted");
         } catch (error) {
             console.error("Error deleting post:", error);
@@ -55,7 +64,7 @@ export function PostsProvider({children}) {
     const updatePost = async (updatedPost) => {
         try {
             await axios.put(`/api/posts/${updatedPost.id}`, updatedPost);
-            await fetchPosts();
+            await fetchPosts(0, 2);
             alert("Post updated");
         } catch (error) {
             console.error("Error updating post:", error);
@@ -63,9 +72,21 @@ export function PostsProvider({children}) {
     };
 
 
-    const getPostById = (postId) => {
-        return postsArr.find(post => post.id.toString() === postId);
-    }
+    const getPost = async (postId) => {
+        try {
+            const response = await axios.get(`/api/posts/${postId}`);
+            const post = response.data;
+            const date = new Date(post.date);
+            post.date = formatDateString(date);
+            return post;
+        } catch (error) {
+            console.error("Error fetching post:", error);
+        }
+    };
+
+    // const getPostById = (postId) => {
+    //     return postsArr.find(post => post.id.toString() === postId);
+    // }
 
     const formatDateString = (date) => {
         const year = date.getFullYear();
@@ -83,8 +104,10 @@ export function PostsProvider({children}) {
         addPost,
         removePost,
         updatePost,
-        getPostById,
-        formatDateString
+        getPost,
+        formatDateString,
+        fetchPosts,
+        numberOfPostsInPage
     };
 
 

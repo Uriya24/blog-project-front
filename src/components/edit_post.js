@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {PostsContext} from "../providers/posts_provider";
 import {useForm} from "react-hook-form";
 import {useParams, useNavigate} from "react-router-dom";
@@ -8,12 +8,27 @@ export function EditPost() {
     const navigate = useNavigate()
     const {id} = useParams();
     const {user} = useContext(UserContext);
-    const {getPostById, updatePost} = useContext(PostsContext);
-    const initialPost = getPostById(id);
-    console.log(initialPost.date)
-    const {register, handleSubmit, formState} = useForm({
-        defaultValues: initialPost
-    });
+    const {getPost, updatePost} = useContext(PostsContext);
+    const {register, handleSubmit, formState, setValue} = useForm();
+    const [initialPost, setInitialPost] = useState();
+
+    useEffect(() => {
+        const fetchPostData = async () => {
+            try {
+                const originalPost = await getPost(id);
+                setInitialPost(originalPost)
+                // Set the default values for the form fields using setValue
+                setValue("title", originalPost.title);
+                setValue("content", originalPost.content);
+                setValue("date", originalPost.date);
+            } catch (error) {
+                console.error("Error fetching post data:", error);
+            }
+        };
+
+        fetchPostData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!user) {
         return <p className="text-center text-red-500 text-2xl mt-3">Only admin can edit posts!</p>

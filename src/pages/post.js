@@ -1,11 +1,27 @@
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {PostsContext} from "../providers/posts_provider";
 
 export function Post() {
     const {id} = useParams();
-    const {getPostById} = useContext(PostsContext);
-    const post = getPostById(id);
+    const {getPost} = useContext(PostsContext);
+    const [post, setPost] = useState();
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                const postById = await getPost(id);
+                setPost(postById);
+                console.log(postById.date)
+            } catch (error) {
+                console.error("Error fetching post:", error);
+            }
+        };
+
+        fetchPost();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
+
 
     return (
         <div className="flex flex-col justify-center items-center">

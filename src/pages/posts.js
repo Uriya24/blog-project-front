@@ -1,31 +1,70 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {PostsContext} from "../providers/posts_provider";
 import {PostCard} from "../components/post_card";
 import {PostList} from "../components/post_list";
 
 export function Posts() {
-    const {postsArr} = useContext(PostsContext);
+    const {fetchPosts, numberOfPostsInPage} = useContext(PostsContext);
     const [searchInputValue, setSearchInputValue] = useState("");
-    const [displayPostsCount, setDisplayPostsCount] = useState(2);
+    const [displayPostsEnd, setDisplayPostsEnd] = useState(numberOfPostsInPage);
+    const [memoryPosts, setMemoryPosts] = useState([]);
+    const [filteredPosts, setFilteredPosts] = useState([]);
 
 
-    const handleSearchInputChange = (event) => {
-        setSearchInputValue(event.target.value);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const fetchedPosts = await fetchPosts(0, numberOfPostsInPage);
+
+                setMemoryPosts(fetchedPosts);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        };
+
+        fetchData();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+
+    const handleNextPosts = async () => {
+        const from = displayPostsEnd;
+        const to = displayPostsEnd + numberOfPostsInPage;
+
+        if (memoryPosts.length < to) {
+            const nextPosts = await fetchPosts(from, to);
+
+            setMemoryPosts([...memoryPosts, ...nextPosts]);
+        }
+
+        setDisplayPostsEnd(to);
     };
 
-    const handleLoadMore = () => {
-        setDisplayPostsCount(displayPostsCount + 2)
+    const handleGoBack = () => {
+        setDisplayPostsEnd(displayPostsEnd - numberOfPostsInPage)
     }
 
-    // A function that filter the posts based on the search input and map each post into a Post card
-    const filteredPostsArr = () => {
-        return postsArr.filter((post) =>
-            post.title.toLowerCase().includes(searchInputValue.toLowerCase()))
-            .map((post) => <PostCard singlePost={post}/>);
+    const handleSearchInputChange = async (event) => {
+        setSearchInputValue(event.target.value);
+
+        try {
+            console.log(event.target.value)
+            const fetchedPosts = await fetchPosts(undefined, undefined, event.target.value);
+            console.log(fetchedPosts)
+            setFilteredPosts(fetchedPosts);
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+            // Handle the error as needed
+        }
     };
 
-    // If the search input is empty we display posts based on the counter, if not we display all posts that included in the search
-    const displayPosts = searchInputValue === "" ? filteredPostsArr().slice(0, displayPostsCount) : filteredPostsArr();
+
+    // If the search input is empty we display posts based on the paging indexes, if not we display all posts that included in the search
+    const postsToDisplay = searchInputValue === "" ? memoryPosts.slice(displayPostsEnd - numberOfPostsInPage, displayPostsEnd) : filteredPosts;
+    const postCards = postsToDisplay.map(post => (
+        <PostCard key={post.id} singlePost={post}/>
+    ));
 
     return (
         <div className="flex flex-col justify-center items-center">
@@ -34,17 +73,28 @@ export function Posts() {
                    placeholder="Search post"
                    onChange={handleSearchInputChange}/>
             <PostList>
-                {displayPosts}
+                {postCards}
             </PostList>
-            {/*if search input is empty show the load more button.
+            {/*if search input is empty show the next and back buttons.
                if there are no more posts to show we display a message*/}
             <div className="inline-flex items-center justify-center">
-                {searchInputValue === "" && <button
-                    className="m-2 px-3 py-2 text-base font-semibold bg-blue-900 rounded-lg border-2 hover:bg-blue-950"
-                    onClick={handleLoadMore}>Load more</button>}
-                {postsArr.length <= displayPostsCount && <span
-                    className="m-2 font-semibold text-sky-500"
-                >No more posts</span>}
+                {searchInputValue === "" && (
+                    <>
+                        {displayPostsEnd > 2 && (
+                            <button
+                                className="m-2 px-3 py-2 text-base font-semibold bg-blue-900 rounded-lg border-2 hover:bg-blue-950"
+                                onClick={handleGoBack}>Go Back
+                            </button>
+                        )}
+                        <button
+                            className="m-2 px-3 py-2 text-base font-semibold bg-blue-900 rounded-lg border-2 hover:bg-blue-950"
+                            onClick={handleNextPosts}>Next Posts
+                        </button>
+                    </>
+                )}
+                {/*{postsArr.length <= displayPostsStart && <span*/}
+                {/*    className="m-2 font-semibold text-sky-500"*/}
+                {/*>No more posts</span>}*/}
             </div>
         </div>
     )
