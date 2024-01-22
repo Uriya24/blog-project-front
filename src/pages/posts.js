@@ -34,6 +34,7 @@ export function Posts() {
 
         if (memoryPosts.length < to) {
             const nextPosts = await fetchPosts(from, to);
+            console.log(nextPosts)
 
             setMemoryPosts([...memoryPosts, ...nextPosts]);
         }
