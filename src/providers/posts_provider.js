@@ -16,7 +16,7 @@ export function PostsProvider({children}) {
 
 
     const fetchPosts = async (from = undefined, to = undefined, filterText = "") => {
-        let apiUrl = '/api/posts';
+        let apiUrl = 'http://localhost:4000/api/posts';
 
         if (from !== undefined && to !== undefined) {
             apiUrl += `?from=${from}&to=${to}`;
@@ -41,7 +41,7 @@ export function PostsProvider({children}) {
 
     const addPost = async (post) => {
         try {
-            await axios.post('/api/posts', post);
+            await axios.post('http://localhost:4000/api/posts', post);
             await fetchPosts(0, 2);
             alert("Post created");
         } catch (error) {
@@ -52,7 +52,7 @@ export function PostsProvider({children}) {
 
     const removePost = async (postId) => {
         try {
-            await axios.delete(`/api/posts/${postId}`);
+            await axios.delete(`http://localhost:4000/api/posts/${postId}`);
             await fetchPosts(0, 2);
             alert("Post deleted");
         } catch (error) {
@@ -63,7 +63,7 @@ export function PostsProvider({children}) {
 
     const updatePost = async (updatedPost) => {
         try {
-            await axios.put(`/api/posts/${updatedPost.id}`, updatedPost);
+            await axios.put(`http://localhost:4000/api/posts/${updatedPost.id}`, updatedPost);
             await fetchPosts(0, 2);
             alert("Post updated");
         } catch (error) {
@@ -74,7 +74,7 @@ export function PostsProvider({children}) {
 
     const getPost = async (postId) => {
         try {
-            const response = await axios.get(`/api/posts/${postId}`);
+            const response = await axios.get(`http://localhost:4000/api/posts/${postId}`);
             const post = response.data;
             const date = new Date(post.date);
             post.date = formatDateString(date);

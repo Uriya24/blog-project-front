@@ -56,7 +56,6 @@ export function Posts() {
             setFilteredPosts(fetchedPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
-            // Handle the error as needed
         }
     };
 
