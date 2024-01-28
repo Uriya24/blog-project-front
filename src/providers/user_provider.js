@@ -13,18 +13,29 @@ export function UserProvider({children}) {
 
     const login = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
-            console.log(tokenResponse);
-            const userInfo = await axios.get(
-                'https://www.googleapis.com/oauth2/v3/userinfo',
-                { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } },
-            );
+            try {
+                const userInfo = await axios.get(
+                    'https://www.googleapis.com/oauth2/v3/userinfo',
+                    {headers: {Authorization: `Bearer ${tokenResponse.access_token}`}},
+                );
+                setUser(userInfo.data);
+                await addUserToDB(userInfo.data);
 
-            console.log(userInfo);
-            setUser(userInfo);
+            } catch (error) {
+                console.error('Error during login:', error);
+            }
         },
-        onError: errorResponse => console.error('Google sign in failed', errorResponse),
+        onError: errorResponse => console.error('Google sign-in failed', errorResponse),
     });
 
+
+    const addUserToDB = async (user) => {
+        try {
+            await axios.post('http://localhost:4000/api/users', user);
+        } catch (error) {
+            console.error("Error adding user:", error);
+        }
+    }
 
     const logout = () => {
         googleLogout();

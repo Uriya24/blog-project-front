@@ -41,9 +41,9 @@ export function PostsProvider({children}) {
 
     const addPost = async (post) => {
         try {
-            await axios.post('http://localhost:4000/api/posts', post);
+            const response = await axios.post('http://localhost:4000/api/posts', post);
             await fetchPosts(0, 2);
-            alert("Post created");
+            alert(response.data.message);
         } catch (error) {
             console.error("Error adding post:", error);
         }
@@ -52,9 +52,9 @@ export function PostsProvider({children}) {
 
     const removePost = async (postId) => {
         try {
-            await axios.delete(`http://localhost:4000/api/posts/${postId}`);
+            const response = await axios.delete(`http://localhost:4000/api/posts/${postId}`);
             await fetchPosts(0, 2);
-            alert("Post deleted");
+            alert(response.data.message);
         } catch (error) {
             console.error("Error deleting post:", error);
         }
@@ -63,9 +63,9 @@ export function PostsProvider({children}) {
 
     const updatePost = async (updatedPost) => {
         try {
-            await axios.put(`http://localhost:4000/api/posts/${updatedPost.id}`, updatedPost);
+            const response = await axios.put(`http://localhost:4000/api/posts/${updatedPost.id}`, updatedPost);
             await fetchPosts(0, 2);
-            alert("Post updated");
+            alert(response.data.message);
         } catch (error) {
             console.error("Error updating post:", error);
         }

@@ -25,7 +25,7 @@ export function Header() {
                                       to="/admin">Admin</Link></li>
                             <li><span
                                 className="text-2xl rounded-md px-2 py-1">
-                                Welcome: {user.data.given_name}</span></li>
+                                Welcome: {user.given_name}</span></li>
                         </>)}
                         <li><Link className="text-2xl rounded-md px-2 py-1 hover:bg-cyan-600 hover:text-white" to="#">
                             {user ? <button onClick={logout}>Sign out</button> :
