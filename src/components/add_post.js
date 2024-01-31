@@ -1,7 +1,6 @@
 import {PostsContext} from "../providers/posts_provider";
 import {useContext} from "react";
 import {useForm} from "react-hook-form";
-// import {v4 as uuidv4} from 'uuid';
 import {useNavigate} from "react-router-dom";
 
 export function AddPost() {
@@ -13,7 +12,6 @@ export function AddPost() {
     const handleNewPostSubmit = (data) => {
         // Add a new post using the addPost function from PostContext with a generated ID from uuid libary
         addPost({
-            // id: uuidv4(),
             title: data.title,
             content: data.content,
             date: data.date,

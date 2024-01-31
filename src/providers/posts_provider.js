@@ -6,7 +6,7 @@ import axios from 'axios';
 export const PostsContext = createContext(null);
 
 export function PostsProvider({children}) {
-    const [postsArr, setPostsArr] = useState([]);
+    const [memoryPosts, setMemoryPosts] = useState([]);
     const numberOfPostsInPage = 2;
 
     // useEffect(() => {
@@ -54,6 +54,7 @@ export function PostsProvider({children}) {
         try {
             const response = await axios.delete(`http://localhost:4000/api/posts/${postId}`);
             await fetchPosts(0, 2);
+            setMemoryPosts(memoryPosts.filter((post) => post.id !== postId));
             alert(response.data.message);
         } catch (error) {
             console.error("Error deleting post:", error);
@@ -99,8 +100,8 @@ export function PostsProvider({children}) {
 
     // Values to be provided by the posts context
     const postsProviderValues = {
-        postsArr,
-        setPostsArr,
+        memoryPosts,
+        setMemoryPosts,
         addPost,
         removePost,
         updatePost,

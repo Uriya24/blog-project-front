@@ -4,10 +4,9 @@ import {PostCard} from "../components/post_card";
 import {PostList} from "../components/post_list";
 
 export function Posts() {
-    const {fetchPosts, numberOfPostsInPage} = useContext(PostsContext);
+    const {fetchPosts, numberOfPostsInPage, setMemoryPosts, memoryPosts} = useContext(PostsContext);
     const [searchInputValue, setSearchInputValue] = useState("");
     const [displayPostsEnd, setDisplayPostsEnd] = useState(numberOfPostsInPage);
-    const [memoryPosts, setMemoryPosts] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
 
 
@@ -32,10 +31,8 @@ export function Posts() {
         const from = displayPostsEnd;
         const to = displayPostsEnd + numberOfPostsInPage;
 
-        if (memoryPosts.length < to) {
+        if (memoryPosts.length < to -1) {
             const nextPosts = await fetchPosts(from, to);
-            console.log(nextPosts)
-
             setMemoryPosts([...memoryPosts, ...nextPosts]);
         }
 
@@ -44,6 +41,7 @@ export function Posts() {
 
     const handleGoBack = () => {
         setDisplayPostsEnd(displayPostsEnd - numberOfPostsInPage)
+        console.log("back Post: ", memoryPosts)
     }
 
     const handleSearchInputChange = async (event) => {
@@ -52,7 +50,6 @@ export function Posts() {
         try {
             console.log(event.target.value)
             const fetchedPosts = await fetchPosts(undefined, undefined, event.target.value);
-            console.log(fetchedPosts)
             setFilteredPosts(fetchedPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
