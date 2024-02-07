@@ -3,7 +3,7 @@ import {UserContext} from "../providers/user_provider";
 import {useContext} from "react";
 
 export function Header() {
-    const {user, login, logout} = useContext(UserContext);
+    const {userName, login, logout} = useContext(UserContext);
 
     return (
         <header style={{
@@ -20,15 +20,15 @@ export function Header() {
                                   to="/posts">Posts</Link></li>
                         <li><Link className="text-2xl rounded-md px-2 py-1 hover:bg-cyan-600 hover:text-white"
                                   to="/contact">Contact</Link></li>
-                        {user && (<>
+                        {userName && (<>
                             <li><Link className="text-2xl rounded-md px-2 py-1 hover:bg-cyan-600 hover:text-white"
                                       to="/admin">Admin</Link></li>
                             <li><span
                                 className="text-2xl rounded-md px-2 py-1">
-                                Welcome: {user.given_name}</span></li>
+                                Welcome: {userName}</span></li>
                         </>)}
                         <li><Link className="text-2xl rounded-md px-2 py-1 hover:bg-cyan-600 hover:text-white" to="#">
-                            {user ? <button onClick={logout}>Sign out</button> :
+                            {userName ? <button onClick={logout}>Sign out</button> :
                                 <button onClick={login}>Sign in</button>}
                         </Link></li>
                     </ul>

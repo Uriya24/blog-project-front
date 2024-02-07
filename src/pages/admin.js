@@ -3,9 +3,9 @@ import {useContext} from "react";
 import {UserContext} from "../providers/user_provider";
 
 export function Admin() {
-    const {user} = useContext(UserContext);
+    const {userName} = useContext(UserContext);
 
-    if(!user) {
+    if(!userName) {
         return <p className="text-center text-red-500 text-2xl mt-3">You must sign in first!</p>
     }
 
