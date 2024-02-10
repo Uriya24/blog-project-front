@@ -8,7 +8,7 @@ import axios from 'axios';
 export const UserContext = createContext(null);
 
 export function UserProvider({children}) {
-    const [userName, setUserName] = useState(null);
+    const [user, setUser] = useState(null);
 
     // Auth code flow
     const login = useGoogleLogin({
@@ -16,11 +16,9 @@ export function UserProvider({children}) {
         onSuccess: async (codeResponse) => {
             console.log("codeResponse: ",codeResponse);
             const addUserResponse = await axios.post(
-                'http://localhost:4000/api/users', {
-                    code: codeResponse.code,
-                });
+                'http://localhost:4000/api/users', {code: codeResponse.code,}, {withCredentials: true});
             console.log("addUserResponse: ",addUserResponse);
-            setUserName(addUserResponse.data.name);
+            setUser(addUserResponse.data.user);
         },
         onError: errorResponse => console.log("google error:" ,errorResponse),
     });
@@ -56,12 +54,12 @@ export function UserProvider({children}) {
 
     const logout = () => {
         googleLogout();
-        setUserName(null);
+        setUser(null);
     }
 
     // Values to be provided by the user context
     const userProviderValues = {
-        userName, login, logout
+        user, login, logout
     }
 
     return (

@@ -41,7 +41,7 @@ export function PostsProvider({children}) {
 
     const addPost = async (post) => {
         try {
-            const response = await axios.post('http://localhost:4000/api/posts', post);
+            const response = await axios.post('http://localhost:4000/api/posts', post, {withCredentials: true});
             await fetchPosts(0, 2);
             alert(response.data.message);
         } catch (error) {
@@ -52,7 +52,7 @@ export function PostsProvider({children}) {
 
     const removePost = async (postId) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/api/posts/${postId}`);
+            const response = await axios.delete(`http://localhost:4000/api/posts/${postId}`, {withCredentials: true});
             await fetchPosts(0, 2);
             setMemoryPosts(memoryPosts.filter((post) => post.id !== postId));
             alert(response.data.message);
@@ -64,7 +64,7 @@ export function PostsProvider({children}) {
 
     const updatePost = async (updatedPost) => {
         try {
-            const response = await axios.put(`http://localhost:4000/api/posts/${updatedPost.id}`, updatedPost);
+            const response = await axios.put(`http://localhost:4000/api/posts/${updatedPost.id}`, updatedPost, {withCredentials: true});
             await fetchPosts(0, 2);
             alert(response.data.message);
         } catch (error) {
