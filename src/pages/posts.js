@@ -8,6 +8,7 @@ export function Posts() {
     const [searchInputValue, setSearchInputValue] = useState("");
     const [filteredPosts, setFilteredPosts] = useState([]);
 
+    //fetching the first posts and the total number of posts
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,7 +50,6 @@ export function Posts() {
         setSearchInputValue(event.target.value);
 
         try {
-            console.log(event.target.value)
             const fetchedPosts = await fetchPosts(undefined, undefined, event.target.value);
             setFilteredPosts(fetchedPosts);
         } catch (error) {
@@ -74,7 +74,7 @@ export function Posts() {
                 {postCards}
             </PostList>
             {/*if search input is empty show the next and back buttons.
-               if there are no more posts to show we display a message*/}
+               if there are no more posts to show we don't show next button*/}
             <div className="inline-flex items-center justify-center">
                 {searchInputValue === "" && (
                     <>
@@ -92,9 +92,6 @@ export function Posts() {
                         )}
                     </>
                 )}
-                {/*{postsArr.length <= displayPostsStart && <span*/}
-                {/*    className="m-2 font-semibold text-sky-500"*/}
-                {/*>No more posts</span>}*/}
             </div>
         </div>
     )
