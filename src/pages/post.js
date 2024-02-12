@@ -12,7 +12,6 @@ export function Post() {
             try {
                 const postById = await getPost(id);
                 setPost(postById);
-                console.log(postById.date)
             } catch (error) {
                 console.error("Error fetching post:", error);
             }

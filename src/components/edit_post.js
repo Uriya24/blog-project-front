@@ -34,6 +34,10 @@ export function EditPost() {
         return <p className="text-center text-red-500 text-2xl mt-3">Only admin can edit posts!</p>
     }
 
+    if (user && !user.admin) {
+        return <p className="text-center text-red-500 text-2xl mt-3">Only admin can edit posts!</p>
+    }
+
     const handleEditPostSubmit = (data) => {
         // Creating a post with the same attributes as the original post, but with different title, content and date
         const updatedPost = {

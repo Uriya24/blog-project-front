@@ -5,8 +5,12 @@ import {UserContext} from "../providers/user_provider";
 export function Admin() {
     const {user} = useContext(UserContext);
 
-    if(!user) {
-        return <p className="text-center text-red-500 text-2xl mt-3">You must sign in first!</p>
+    if (!user) {
+        return <p className="text-center text-red-500 text-2xl mt-3">You must sign in as admin!</p>
+    }
+
+    if (user && !user.admin) {
+        return <p className="text-center text-red-500 text-2xl mt-3">You must sign in as admin!</p>
     }
 
     return (

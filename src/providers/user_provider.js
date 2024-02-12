@@ -10,51 +10,23 @@ export const UserContext = createContext(null);
 export function UserProvider({children}) {
     const [user, setUser] = useState(null);
 
-    // Auth code flow
+
     const login = useGoogleLogin({
         flow: 'auth-code',
         onSuccess: async (codeResponse) => {
-            console.log("codeResponse: ",codeResponse);
             const addUserResponse = await axios.post(
                 'http://localhost:4000/api/users', {code: codeResponse.code,}, {withCredentials: true});
-            console.log("addUserResponse: ",addUserResponse);
             setUser(addUserResponse.data.user);
         },
         onError: errorResponse => console.log("google error:" ,errorResponse),
     });
 
-    // implicit flow
-    // const login = useGoogleLogin({
-    //     onSuccess: async (tokenResponse) => {
-    //         try {
-    //             console.log(tokenResponse)
-    //             const userInfo = await axios.get(
-    //                 'https://www.googleapis.com/oauth2/v3/userinfo',
-    //                 {headers: {Authorization: `Bearer ${tokenResponse.access_token}`}},
-    //             );
-    //             console.log(userInfo);
-    //             setUser(userInfo.data);
-    //             await addUserToDB(userInfo.data);
-    //
-    //         } catch (error) {
-    //             console.error('Error during login:', error);
-    //         }
-    //     },
-    //     onError: errorResponse => console.error('Google sign-in failed', errorResponse),
-    // });
 
-
-    // const addUserToDB = async (user) => {
-    //     try {
-    //         await axios.post('http://localhost:4000/api/users', user);
-    //     } catch (error) {
-    //         console.error("Error adding user:", error);
-    //     }
-    // }
-
-    const logout = () => {
+    const logout = async () => {
         googleLogout();
+        const logOutRes = await axios.delete('http://localhost:4000/api/users', {withCredentials: true});
         setUser(null);
+        alert(logOutRes.data);
     }
 
     // Values to be provided by the user context

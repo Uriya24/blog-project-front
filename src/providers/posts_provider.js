@@ -6,13 +6,11 @@ import axios from 'axios';
 export const PostsContext = createContext(null);
 
 export function PostsProvider({children}) {
-    const [memoryPosts, setMemoryPosts] = useState([]);
     const numberOfPostsInPage = 2;
+    const [memoryPosts, setMemoryPosts] = useState([]);
+    const [displayPostsEnd, setDisplayPostsEnd] = useState(numberOfPostsInPage);
+    const [totalNumberOfPosts, setTotalNumberOfPosts] = useState(0);
 
-    // useEffect(() => {
-    //     fetchPosts(0, 2);
-    //     // eslint-disable-next-line
-    // }, []);
 
 
     const fetchPosts = async (from = undefined, to = undefined, filterText = "") => {
@@ -42,7 +40,6 @@ export function PostsProvider({children}) {
     const addPost = async (post) => {
         try {
             const response = await axios.post('http://localhost:4000/api/posts', post, {withCredentials: true});
-            await fetchPosts(0, 2);
             alert(response.data.message);
         } catch (error) {
             console.error("Error adding post:", error);
@@ -53,8 +50,10 @@ export function PostsProvider({children}) {
     const removePost = async (postId) => {
         try {
             const response = await axios.delete(`http://localhost:4000/api/posts/${postId}`, {withCredentials: true});
-            await fetchPosts(0, 2);
-            setMemoryPosts(memoryPosts.filter((post) => post.id !== postId));
+            const fetchedPosts = await fetchPosts(0, numberOfPostsInPage);
+            setMemoryPosts(fetchedPosts);
+            setDisplayPostsEnd(numberOfPostsInPage);
+            setTotalNumberOfPosts(totalNumberOfPosts - 1);
             alert(response.data.message);
         } catch (error) {
             console.error("Error deleting post:", error);
@@ -65,7 +64,6 @@ export function PostsProvider({children}) {
     const updatePost = async (updatedPost) => {
         try {
             const response = await axios.put(`http://localhost:4000/api/posts/${updatedPost.id}`, updatedPost, {withCredentials: true});
-            await fetchPosts(0, 2);
             alert(response.data.message);
         } catch (error) {
             console.error("Error updating post:", error);
@@ -85,9 +83,15 @@ export function PostsProvider({children}) {
         }
     };
 
-    // const getPostById = (postId) => {
-    //     return postsArr.find(post => post.id.toString() === postId);
-    // }
+    const getNumberOfPosts = async () => {
+        try {
+            const response = await axios.post('http://localhost:4000/api/posts/count');
+            return response.data.numberOfPosts;
+        } catch (error) {
+            console.error("Error fetching number of posts:", error);
+        }
+    }
+
 
     const formatDateString = (date) => {
         const year = date.getFullYear();
@@ -102,13 +106,18 @@ export function PostsProvider({children}) {
     const postsProviderValues = {
         memoryPosts,
         setMemoryPosts,
+        displayPostsEnd,
+        setDisplayPostsEnd,
+        totalNumberOfPosts,
+        setTotalNumberOfPosts,
+        numberOfPostsInPage,
+        fetchPosts,
         addPost,
         removePost,
         updatePost,
         getPost,
-        formatDateString,
-        fetchPosts,
-        numberOfPostsInPage
+        getNumberOfPosts,
+        formatDateString
     };
 
 

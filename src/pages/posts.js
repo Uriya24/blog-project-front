@@ -4,17 +4,19 @@ import {PostCard} from "../components/post_card";
 import {PostList} from "../components/post_list";
 
 export function Posts() {
-    const {fetchPosts, numberOfPostsInPage, setMemoryPosts, memoryPosts} = useContext(PostsContext);
+    const {fetchPosts, numberOfPostsInPage, getNumberOfPosts, setMemoryPosts, memoryPosts, setDisplayPostsEnd, displayPostsEnd, setTotalNumberOfPosts, totalNumberOfPosts} = useContext(PostsContext);
     const [searchInputValue, setSearchInputValue] = useState("");
-    const [displayPostsEnd, setDisplayPostsEnd] = useState(numberOfPostsInPage);
     const [filteredPosts, setFilteredPosts] = useState([]);
-
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetchedPosts = await fetchPosts(0, numberOfPostsInPage);
+                setDisplayPostsEnd(numberOfPostsInPage);
 
+                const numberOfPosts = await getNumberOfPosts();
+                setTotalNumberOfPosts(numberOfPosts);
+
+                const fetchedPosts = await fetchPosts(0, numberOfPostsInPage);
                 setMemoryPosts(fetchedPosts);
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -41,7 +43,6 @@ export function Posts() {
 
     const handleGoBack = () => {
         setDisplayPostsEnd(displayPostsEnd - numberOfPostsInPage)
-        console.log("back Post: ", memoryPosts)
     }
 
     const handleSearchInputChange = async (event) => {
@@ -77,16 +78,18 @@ export function Posts() {
             <div className="inline-flex items-center justify-center">
                 {searchInputValue === "" && (
                     <>
-                        {displayPostsEnd > 2 && (
+                        {displayPostsEnd > numberOfPostsInPage && (
                             <button
                                 className="m-2 px-3 py-2 text-base font-semibold bg-blue-900 rounded-lg border-2 hover:bg-blue-950"
                                 onClick={handleGoBack}>Go Back
                             </button>
                         )}
-                        <button
-                            className="m-2 px-3 py-2 text-base font-semibold bg-blue-900 rounded-lg border-2 hover:bg-blue-950"
-                            onClick={handleNextPosts}>Next Posts
-                        </button>
+                        {totalNumberOfPosts > displayPostsEnd && (
+                            <button
+                                className="m-2 px-3 py-2 text-base font-semibold bg-blue-900 rounded-lg border-2 hover:bg-blue-950"
+                                onClick={handleNextPosts}>Next Posts
+                            </button>
+                        )}
                     </>
                 )}
                 {/*{postsArr.length <= displayPostsStart && <span*/}

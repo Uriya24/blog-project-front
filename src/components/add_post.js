@@ -1,20 +1,23 @@
 import {PostsContext} from "../providers/posts_provider";
+import {UserContext} from "../providers/user_provider";
 import {useContext} from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 
 export function AddPost() {
+    const {user} = useContext(UserContext);
     const {addPost} = useContext(PostsContext);
     const {register, handleSubmit, formState} = useForm();
     const navigate = useNavigate()
 
 
     const handleNewPostSubmit = (data) => {
-        // Add a new post using the addPost function from PostContext with a generated ID from uuid libary
+        // Add a new post using the addPost function from PostContext
         addPost({
             title: data.title,
             content: data.content,
             date: data.date,
+            posted_by: user.name,
         })
 
         // Navigate to the '/posts' page after adding the new post using the navigate function from react-router-dom

@@ -25,7 +25,7 @@ export function Header() {
                             <li><Link className="text-2xl rounded-md px-2 py-1 hover:bg-cyan-600 hover:text-white"
                                       to="/admin">Admin</Link></li>)}
                         {user && <li><span className="text-2xl rounded-md px-2 py-1">
-                                Welcome: {user.name}</span></li>}
+                                Welcome: {user.first_name}</span></li>}
                         <li><Link className="text-2xl rounded-md px-2 py-1 hover:bg-cyan-600 hover:text-white" to="#">
                             {user ? <button onClick={logout}>Sign out</button> :
                                 <button onClick={login}>Sign in</button>}
