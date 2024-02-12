@@ -12,9 +12,11 @@ export function PostCard({singlePost}) {
     }
 
     const shortContent = (content, maxWords) => {
-        const words = content.split(" ");
-        if (words.length > maxWords) {
-            return words.slice(0, maxWords).join(" ") + " ...";
+        if (content){
+            const words = content.split(" ");
+            if (words.length > maxWords) {
+                return words.slice(0, maxWords).join(" ") + " ...";
+            }
         }
         return content;
     }
